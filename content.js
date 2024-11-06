@@ -20,18 +20,36 @@ function createSidebar() {
         box-shadow: 2px 0 10px rgba(0,0,0,0.2);
         background: #202124;
     `;
+
+    contentFrame = document.createElement('iframe');
+    contentFrame.id = 'content-frame';
+    contentFrame.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 64px;
+        width: calc(100% - 64px);
+        height: 100vh;
+        border: none;
+        z-index: 2147483646;
+        background: #202124;
+        display: none;
+    `;
+
     document.body.appendChild(sidebar);
+    document.body.appendChild(contentFrame);
 }
 
 function showSidebar() {
     if (!sidebar) createSidebar();
     sidebar.style.left = '0';
+    contentFrame.style.display = 'block';
     sidebarVisible = true;
 }
 
 function hideSidebar() {
     if (sidebar) {
         sidebar.style.left = '-64px';
+        contentFrame.style.display = 'none';
         sidebarVisible = false;
     }
 }
@@ -53,6 +71,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         } else {
             showSidebar();
         }
+    }
+});
+
+// Mesajları dinle
+window.addEventListener('message', (event) => {
+    if (event.data.type === 'openUrl') {
+        contentFrame.src = event.data.url;
     }
 });
 
