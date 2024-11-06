@@ -1,23 +1,36 @@
 {
   "manifest_version": 3,
-  "name": "Chrome Sidebar Extension",
+  "name": "App Sidebar",
   "version": "1.0",
-  "description": "A beautiful sidebar extension for Chrome",
-  "permissions": ["storage", "tabs"],
-  "action": {
-    "default_title": "Toggle Sidebar"
-  },
-  "background": {
-    "service_worker": "background.js",
-    "type": "module"
-  },
+  "description": "A sidebar with quick access to apps",
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "web_accessible_resources": [{
+    "resources": [
+      "sidebar.html",
+      "styles.css",
+      "sidebar.js",
+      "icons/*"
+    ],
+    "matches": ["<all_urls>"]
+  }],
   "content_scripts": [{
     "matches": ["<all_urls>"],
-    "css": ["content.css"],
-    "js": ["content.js"]
+    "js": ["content.js"],
+    "css": ["styles.css"],
+    "run_at": "document_start",
+    "all_frames": false
   }],
-  "web_accessible_resources": [{
-    "resources": ["sidebar.html"],
-    "matches": ["<all_urls>"]
-  }]
+  "action": {
+    "default_title": "App Sidebar"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
 }

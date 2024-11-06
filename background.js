@@ -1,6 +1,13 @@
-let sidebarOpen = false;
-
 chrome.action.onClicked.addListener((tab) => {
-  sidebarOpen = !sidebarOpen;
-  chrome.tabs.sendMessage(tab.id, { action: "toggleSidebar", isOpen: sidebarOpen });
+    chrome.tabs.sendMessage(tab.id, { action: 'toggleSidebar' })
+        .catch(error => console.error('Error:', error));
+});
+
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'openTab') {
+        chrome.tabs.create({ 
+            url: request.url,
+            active: true
+        });
+    }
 });

@@ -1,0 +1,180 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 64px;
+    height: 100vh;
+    overflow: hidden;
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: #1e1e2e;
+}
+
+#sidebar {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 0;
+    box-sizing: border-box;
+    background-color: #1e1e2e;
+    position: relative;
+    z-index: 2147483647;
+}
+
+.app-icon {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    margin: 6px 0;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: #313244;
+}
+
+.app-icon:hover {
+    transform: translateY(-2px);
+    background-color: #45475a;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.app-icon img {
+    width: 24px;
+    height: 24px;
+    filter: invert(1);
+    opacity: 0.8;
+    transition: all 0.2s ease;
+}
+
+.app-icon:hover img {
+    opacity: 1;
+}
+
+.divider {
+    width: 32px;
+    height: 1px;
+    background-color: #45475a;
+    margin: 8px 0;
+}
+
+.settings {
+    margin-top: auto;
+}
+
+/* Aktif durum için stil */
+.app-icon.active {
+    background-color: #89b4fa;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.app-icon.active img {
+    opacity: 1;
+    filter: brightness(1.2);
+}
+
+/* Tooltip stilleri */
+.tooltip {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #1e1e2e;
+    color: #cdd6f4;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    margin-left: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    pointer-events: none;
+}
+
+.app-icon:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Hover efekti */
+.app-icon.hover {
+    transform: translateY(-2px);
+    background-color: #45475a;
+}
+
+/* Mevcut stillere ek olarak */
+#side-panel {
+    position: fixed;
+    top: 0;
+    left: 64px;
+    width: 400px;
+    height: 100vh;
+    background: #202124;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 2147483646;
+    box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+}
+
+#side-panel.open {
+    transform: translateX(0);
+}
+
+.panel-header {
+    height: 40px;
+    background: #313244;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+    border-bottom: 1px solid #45475a;
+}
+
+.panel-title {
+    color: #e8eaed;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    color: #e8eaed;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+
+.close-button:hover {
+    background-color: #45475a;
+}
+
+.panel-content {
+    height: calc(100% - 40px);
+    overflow: hidden;
+}
+
+#panel-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: #202124;
+}
+
+/* Aktif ikon stilleri */
+.app-icon.active {
+    background-color: #89b4fa !important;
+}
+
+.app-icon.active img {
+    opacity: 1 !important;
+    filter: brightness(1.2);
+}
+  

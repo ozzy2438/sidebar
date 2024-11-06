@@ -1,73 +1,60 @@
-// Create and inject the sidebar
-const sidebarContainer = document.createElement('div');
-sidebarContainer.id = 'chrome-sidebar-extension';
+let sidebarVisible = false;
+let sidebar = null;
+let contentFrame = null;
 
-const iframe = document.createElement('iframe');
-iframe.src = chrome.runtime.getURL('sidebar.html');
-sidebarContainer.appendChild(iframe);
-document.body.appendChild(sidebarContainer);
+function createSidebar() {
+    if (sidebar) return;
 
-let timeout;
-const SHOW_DELAY = 300; // ms to wait before showing
-const HIDE_DELAY = 1000; // ms to wait before hiding
-const TRIGGER_AREA = 50; // px from left edge to trigger show
+    sidebar = document.createElement('iframe');
+    sidebar.id = 'app-sidebar';
+    sidebar.src = chrome.runtime.getURL('sidebar.html');
+    sidebar.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: -64px;
+        width: 64px;
+        height: 100vh;
+        border: none;
+        z-index: 2147483647;
+        transition: left 0.3s ease;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+        background: #202124;
+    `;
+    document.body.appendChild(sidebar);
+}
 
 function showSidebar() {
-  clearTimeout(timeout);
-  sidebarContainer.classList.add('open');
+    if (!sidebar) createSidebar();
+    sidebar.style.left = '0';
+    sidebarVisible = true;
 }
 
 function hideSidebar() {
-  clearTimeout(timeout);
-  timeout = setTimeout(() => {
-    if (!isMouseOverSidebar()) {
-      sidebarContainer.classList.remove('open');
+    if (sidebar) {
+        sidebar.style.left = '-64px';
+        sidebarVisible = false;
     }
-  }, HIDE_DELAY);
 }
 
-function isMouseOverSidebar() {
-  const sidebarRect = sidebarContainer.getBoundingClientRect();
-  return (
-    mouseX >= sidebarRect.left &&
-    mouseX <= sidebarRect.right &&
-    mouseY >= sidebarRect.top &&
-    mouseY <= sidebarRect.bottom
-  );
-}
-
-let mouseX = 0;
-let mouseY = 0;
-
-// Track mouse position
+// Mouse hareketi kontrolü
 document.addEventListener('mousemove', (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-
-  if (mouseX <= TRIGGER_AREA) {
-    setTimeout(() => showSidebar(), SHOW_DELAY);
-  } else if (!isMouseOverSidebar()) {
-    hideSidebar();
-  }
-});
-
-// Keep sidebar open while mouse is over it
-sidebarContainer.addEventListener('mouseenter', () => {
-  clearTimeout(timeout);
-  showSidebar();
-});
-
-sidebarContainer.addEventListener('mouseleave', () => {
-  hideSidebar();
-});
-
-// Listen for messages from the background script
-chrome.runtime.onMessage.addListener((message) => {
-  if (message.action === 'toggleSidebar') {
-    if (message.isOpen) {
-      showSidebar();
-    } else {
-      sidebarContainer.classList.remove('open');
+    if (e.clientX <= 10) {
+        showSidebar();
+    } else if (e.clientX > 64 && sidebarVisible) {
+        hideSidebar();
     }
-  }
 });
+
+// Extension mesajlarını dinle
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.action === 'toggleSidebar') {
+        if (sidebarVisible) {
+            hideSidebar();
+        } else {
+            showSidebar();
+        }
+    }
+});
+
+// Sayfa yüklendiğinde sidebar'ı oluştur
+document.addEventListener('DOMContentLoaded', createSidebar);
