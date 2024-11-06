@@ -6,11 +6,17 @@ document.addEventListener('DOMContentLoaded', function() {
             const url = this.getAttribute('data-url');
             if (!url) return;
 
-            // URL'yi parent window'a gönder
+            // Remove 'active' class from all icons
+            appIcons.forEach(icon => icon.classList.remove('active'));
+
+            // Add 'active' class to the clicked icon
+            this.classList.add('active');
+
+            // Send URL to parent window
             window.parent.postMessage({
                 type: 'openUrl',
                 url: url
             }, '*');
         });
     });
-}); 
+});

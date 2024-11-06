@@ -177,4 +177,16 @@ body, html {
     opacity: 1 !important;
     filter: brightness(1.2);
 }
-  
+
+/* contentFrame styles */
+#content-frame {
+    position: fixed;
+    top: 0;
+    left: 64px;
+    width: calc(100% - 64px);
+    height: 100vh;
+    border: none;
+    z-index: 2147483646;
+    background: #202124;
+    display: none;
+}
