@@ -1,4 +1,3 @@
-// Create and inject the sidebar
 const sidebarContainer = document.createElement('div');
 sidebarContainer.id = 'chrome-sidebar-extension';
 

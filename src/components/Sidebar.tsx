@@ -9,7 +9,8 @@ export default function Sidebar() {
     <div className="flex h-screen bg-[#202124]">
       <Navigation activeView={activeView} onViewChange={setActiveView} />
       <main className="flex-1">
-        <CalendarView />
+        {activeView === 'calendar' && <CalendarView />}
+        {/* Add conditional rendering for other views here */}
       </main>
     </div>
   );
