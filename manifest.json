@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "Chrome Sidebar Extension",
+  "version": "1.0",
+  "description": "A beautiful sidebar extension for Chrome",
+  "permissions": ["storage", "tabs"],
+  "action": {
+    "default_title": "Toggle Sidebar"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "css": ["content.css"],
+    "js": ["content.js"]
+  }],
+  "web_accessible_resources": [{
+    "resources": ["sidebar.html"],
+    "matches": ["<all_urls>"]
+  }]
+}
